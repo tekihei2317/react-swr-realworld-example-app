@@ -1,12 +1,15 @@
-import { IndexPage } from '../pages/Index'
+import { IndexPage } from '../pages/index'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { DefaultLayout } from './DefaultLayout'
 
 export const AppRoutes = () => {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<IndexPage />} />
-      </Routes>
-    </BrowserRouter>
+    <DefaultLayout>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<IndexPage />} />
+        </Routes>
+      </BrowserRouter>
+    </DefaultLayout>
   )
 }
