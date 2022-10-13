@@ -1,9 +1,12 @@
 import { ArticlePreview } from '../components/ArticlePreview'
 import { TagList } from '../components/TagList'
+import { useAuthContext } from '../utils/context'
 
 export const IndexPage = () => {
+  const { user } = useAuthContext()
   return (
     <div>
+      {JSON.stringify(user)}
       <div className="home-page">
         <div className="banner">
           <div className="container">

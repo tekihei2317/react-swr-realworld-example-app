@@ -1,4 +1,39 @@
+import { Link } from 'react-router-dom'
+import { useAuthContext } from '../utils/context'
+
+export const NavigationItems = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+  return isLoggedIn ? (
+    <>
+      <li className="nav-item">
+        <a className="nav-link" href="">
+          <i className="ion-compose"></i>&nbsp;New Article
+        </a>
+      </li>
+      <li className="nav-item">
+        <a className="nav-link" href="">
+          <i className="ion-gear-a"></i>&nbsp;Settings
+        </a>
+      </li>
+    </>
+  ) : (
+    <>
+      <li className="nav-item">
+        <Link to="/login" className="nav-link">
+          Sign in
+        </Link>
+      </li>
+      <li className="nav-item">
+        <Link to="/register" className="nav-link">
+          Sign up
+        </Link>
+      </li>
+    </>
+  )
+}
+
 export const PageHeader = () => {
+  const { isLoggedIn } = useAuthContext()
+
   return (
     <nav className="navbar navbar-light">
       <div className="container">
@@ -12,30 +47,7 @@ export const PageHeader = () => {
               Home
             </a>
           </li>
-          {/* TODO: ログインしていないときは非表示にする */}
-          <li className="nav-item">
-            <a className="nav-link" href="">
-              <i className="ion-compose"></i>&nbsp;New Article
-            </a>
-          </li>
-          {/* TODO: ログインしていないときは非表示にする */}
-          <li className="nav-item">
-            <a className="nav-link" href="">
-              <i className="ion-gear-a"></i>&nbsp;Settings
-            </a>
-          </li>
-          {/* TODO: ログインしているときは非表示にする */}
-          <li className="nav-item">
-            <a className="nav-link" href="">
-              Sign in
-            </a>
-          </li>
-          {/* TODO: ログインしているときは非表示にする */}
-          <li className="nav-item">
-            <a className="nav-link" href="">
-              Sign up
-            </a>
-          </li>
+          <NavigationItems isLoggedIn={isLoggedIn} />
         </ul>
       </div>
     </nav>
