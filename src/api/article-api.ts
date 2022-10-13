@@ -27,3 +27,11 @@ export type ArticlesResponse = {
 export async function getGlobalFeed() {
   return runRequest(() => axios.get<ArticlesResponse>('/articles'))
 }
+
+export async function favoriteArticle(slug: string) {
+  return runRequest(() => axios.post(`/articles/${slug}/favorite`))
+}
+
+export async function unfavoriteArticle(slug: string) {
+  return runRequest(() => axios.delete(`/articles/${slug}/unfavorite`))
+}

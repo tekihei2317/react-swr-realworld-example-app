@@ -14,18 +14,18 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
           <Link to={authorProfileLink} className="author">
             {article.author.username}
           </Link>
-          <span className="date">January 20th</span>
+          <span className="date">{new Date(article.createdAt).toLocaleDateString()}</span>
         </div>
         <button className="btn btn-outline-primary btn-sm pull-xs-right">
           <i className="ion-heart"></i>
           {article.favoritesCount}
         </button>
       </div>
-      <a href="" className="preview-link">
+      <Link to={`/articles/${article.slug}`} className="preview-link">
         <h1>{article.title}</h1>
         <p>{article.description}</p>
         <span>Read more...</span>
-      </a>
+      </Link>
     </div>
   )
 }

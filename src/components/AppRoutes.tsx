@@ -4,6 +4,7 @@ import { DefaultLayout } from './DefaultLayout'
 import { LoginPage } from '../pages/login'
 import { RegisterPage } from '../pages/register'
 import { ProfilePage } from '../pages/profile/[username]'
+import { ArticlePage } from '../pages/articles/[slug]'
 
 export const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ export const AppRoutes = () => {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/profile/:username" element={<ProfilePage />} />
+          <Route path="/articles/:slug" element={<ArticlePage />} />
         </Routes>
       </DefaultLayout>
     </BrowserRouter>
