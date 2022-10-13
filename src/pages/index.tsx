@@ -1,9 +1,23 @@
+import { useEffect, useState } from 'react'
+import { Article, getGlobalFeed } from '../api/article-api'
 import { ArticlePreview } from '../components/ArticlePreview'
 import { TagList } from '../components/TagList'
 import { useAuthContext } from '../utils/context'
 
 export const IndexPage = () => {
-  const { user } = useAuthContext()
+  const { isLoggedIn } = useAuthContext()
+  const [articles, setArticles] = useState<Article[]>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, status } = await getGlobalFeed()
+      if (status === 200) {
+        setArticles(data.articles)
+      }
+    }
+    fetchData()
+  }, [])
+
   return (
     <div>
       <div className="home-page">
@@ -20,10 +34,11 @@ export const IndexPage = () => {
               <div className="feed-toggle">
                 <ul className="nav nav-pills outline-active">
                   <li className="nav-item">
-                    {/* TODO: ログインしていないときは隠す */}
-                    <a className="nav-link disabled" href="">
-                      Your Feed
-                    </a>
+                    {isLoggedIn && (
+                      <a className="nav-link disabled" href="">
+                        Your Feed
+                      </a>
+                    )}
                   </li>
                   <li className="nav-item">
                     <a className="nav-link active" href="">
@@ -33,8 +48,9 @@ export const IndexPage = () => {
                 </ul>
               </div>
 
-              <ArticlePreview />
-              <ArticlePreview />
+              {articles.map((article, index) => (
+                <ArticlePreview article={article} key={index} />
+              ))}
             </div>
 
             <div className="col-md-3">

@@ -37,15 +37,15 @@ export const PageHeader = () => {
   return (
     <nav className="navbar navbar-light">
       <div className="container">
-        <a className="navbar-brand" href="index.html">
-          conduit
-        </a>
+        <Link to="/" className="navbar-brand">
+          Conduit
+        </Link>
         <ul className="nav navbar-nav pull-xs-right">
           <li className="nav-item">
             {/* Add "active" className when you're on that page" */}
-            <a className="nav-link active" href="">
+            <Link to="/" className="nav-link active">
               Home
-            </a>
+            </Link>
           </li>
           <NavigationItems isLoggedIn={isLoggedIn} />
         </ul>
