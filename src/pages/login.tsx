@@ -1,10 +1,13 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { login, UserCredentials } from '../api/auth-api'
 import { FormErrors } from '../components/FormErrors'
 import { useValidationErrors } from '../hooks/use-validation-error'
+import { useAuthContext } from '../utils/context'
+import { tokenStorage } from '../utils/token-storage'
 
 export const LoginPage = () => {
+  const { setUser } = useAuthContext()
   const [form, setForm] = useState<UserCredentials>({
     email: '',
     password: '',
@@ -15,15 +18,19 @@ export const LoginPage = () => {
   type ChangeEventHandler = (name: keyof UserCredentials) => React.ChangeEventHandler<HTMLInputElement>
   const handleChange: ChangeEventHandler = (name) => (event) => {
     setForm({ ...form, [name]: event.currentTarget.value })
-    console.log(form)
   }
 
-  type SubmitEventHandler = React.FormEventHandler<HTMLFormElement>
-  const handleSubmit: SubmitEventHandler = async (event) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
-    const { error, status } = await login(form)
-    if (status === 200) navigate('/')
+    const { data, error, status } = await login(form)
+    if (status === 200) {
+      const { user } = data
+      setUser(user)
+      tokenStorage.set(data.user.token)
+
+      navigate('/')
+    }
     if (status === 422) setErrors(error.errors)
   }
 
@@ -37,7 +44,6 @@ export const LoginPage = () => {
               <Link to="/register">Need an account?</Link>
             </p>
 
-            {/* TODO: バリデーションエラー */}
             <FormErrors errors={errors} />
 
             <form onSubmit={handleSubmit}>

@@ -6,6 +6,18 @@ export type UserCredentials = {
   password: string
 }
 
+export type User = {
+  username: string
+  email: string
+  bio: string | null
+  image: string | null
+  token: string
+}
+
 export function login(credentials: UserCredentials) {
-  return runRequest(() => axios.post('/users/login', { user: credentials }))
+  return runRequest(() => axios.post<{ user: User }>('/users/login', { user: credentials }))
+}
+
+export function getCurrentUser() {
+  return runRequest(() => axios.get<{ user: User }>('/user'))
 }

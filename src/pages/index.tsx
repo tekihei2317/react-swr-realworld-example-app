@@ -6,7 +6,6 @@ export const IndexPage = () => {
   const { user } = useAuthContext()
   return (
     <div>
-      {JSON.stringify(user)}
       <div className="home-page">
         <div className="banner">
           <div className="container">

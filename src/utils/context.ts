@@ -1,7 +1,13 @@
 import { createContext, useContext } from 'react'
-import { User } from '../hooks/use-auth'
+import { User } from '../api/auth-api'
 
-type AuthContextValue = { user?: User; isLoggedIn: boolean } | undefined
+type AuthContextValue =
+  | {
+      user?: User
+      isLoggedIn: boolean
+      setUser: (user: User) => void
+    }
+  | undefined
 export const AuthContext = createContext<AuthContextValue>(undefined)
 
 export const useAuthContext = () => {
