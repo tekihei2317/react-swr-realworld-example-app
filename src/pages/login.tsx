@@ -1,6 +1,32 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { login, UserCredentials } from '../api/auth-api'
+import { FormErrors } from '../components/FormErrors'
+import { useValidationErrors } from '../hooks/use-validation-error'
 
 export const LoginPage = () => {
+  const [form, setForm] = useState<UserCredentials>({
+    email: '',
+    password: '',
+  })
+  const { errors, setErrors } = useValidationErrors()
+  const navigate = useNavigate()
+
+  type ChangeEventHandler = (name: keyof UserCredentials) => React.ChangeEventHandler<HTMLInputElement>
+  const handleChange: ChangeEventHandler = (name) => (event) => {
+    setForm({ ...form, [name]: event.currentTarget.value })
+    console.log(form)
+  }
+
+  type SubmitEventHandler = React.FormEventHandler<HTMLFormElement>
+  const handleSubmit: SubmitEventHandler = async (event) => {
+    event.preventDefault()
+
+    const { error, status } = await login(form)
+    if (status === 200) navigate('/')
+    if (status === 422) setErrors(error.errors)
+  }
+
   return (
     <div className="auth-page">
       <div className="container page">
@@ -12,16 +38,26 @@ export const LoginPage = () => {
             </p>
 
             {/* TODO: バリデーションエラー */}
-            <ul className="error-messages">
-              <li>That email is already taken</li>
-            </ul>
+            <FormErrors errors={errors} />
 
-            <form>
+            <form onSubmit={handleSubmit}>
               <fieldset className="form-group">
-                <input className="form-control form-control-lg" type="text" placeholder="Email" />
+                <input
+                  className="form-control form-control-lg"
+                  type="text"
+                  placeholder="Email"
+                  value={form.email}
+                  onChange={handleChange('email')}
+                />
               </fieldset>
               <fieldset className="form-group">
-                <input className="form-control form-control-lg" type="password" placeholder="Password" />
+                <input
+                  className="form-control form-control-lg"
+                  type="password"
+                  placeholder="Password"
+                  value={form.password}
+                  onChange={handleChange('password')}
+                />
               </fieldset>
               <button className="btn btn-lg btn-primary pull-xs-right">Sign in</button>
             </form>

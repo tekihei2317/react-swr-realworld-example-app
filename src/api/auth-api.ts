@@ -1,4 +1,5 @@
 import { axios } from '../utils/axios'
+import { runRequest } from '../utils/request'
 
 export type UserCredentials = {
   email: string
@@ -6,5 +7,5 @@ export type UserCredentials = {
 }
 
 export function login(credentials: UserCredentials) {
-  return axios.post('/users/login', credentials)
+  return runRequest(() => axios.post('/users/login', { user: credentials }))
 }
