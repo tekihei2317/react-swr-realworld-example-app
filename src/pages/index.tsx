@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Article, getGlobalFeed } from '../api/article-api'
+import { useNavigate } from 'react-router-dom'
+import { Article, getGlobalFeed, favoriteArticle, unfavoriteArticle } from '../api/article-api'
 import { ArticlePreview } from '../components/ArticlePreview'
 import { TagList } from '../components/TagList'
 import { useAuthContext } from '../utils/context'
@@ -7,6 +8,21 @@ import { useAuthContext } from '../utils/context'
 export const IndexPage = () => {
   const { isLoggedIn } = useAuthContext()
   const [articles, setArticles] = useState<Article[]>([])
+  const navigate = useNavigate()
+
+  const handleToggleLike = async (article: Article) => {
+    if (!isLoggedIn) {
+      navigate('/register')
+      return
+    }
+
+    const toggleLike = !article.favorited ? favoriteArticle : unfavoriteArticle
+    const { status, data } = await toggleLike(article.slug)
+    if (status === 200) {
+      const updatedArticles = articles.map((a) => (a.slug === article.slug ? data.article : a))
+      setArticles(updatedArticles)
+    }
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +65,7 @@ export const IndexPage = () => {
               </div>
 
               {articles.map((article, index) => (
-                <ArticlePreview article={article} key={index} />
+                <ArticlePreview article={article} toggleLike={handleToggleLike} key={index} />
               ))}
             </div>
 

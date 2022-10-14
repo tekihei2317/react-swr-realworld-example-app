@@ -1,7 +1,13 @@
 import { Link } from 'react-router-dom'
 import { Article } from '../api/article-api'
+import { clsx } from 'clsx'
 
-export const ArticlePreview = ({ article }: { article: Article }) => {
+type ArticlePreviewProps = {
+  article: Article
+  toggleLike: (article: Article) => Promise<void>
+}
+
+export const ArticlePreview = ({ article, toggleLike }: ArticlePreviewProps) => {
   const authorProfileLink = `/profile/${article.author.username}`
 
   return (
@@ -16,7 +22,10 @@ export const ArticlePreview = ({ article }: { article: Article }) => {
           </Link>
           <span className="date">{new Date(article.createdAt).toLocaleDateString()}</span>
         </div>
-        <button className="btn btn-outline-primary btn-sm pull-xs-right">
+        <button
+          className={clsx('btn btn-sm pull-xs-right', article.favorited ? 'btn-primary' : 'btn-outline-primary')}
+          onClick={() => toggleLike(article)}
+        >
           <i className="ion-heart"></i>
           {article.favoritesCount}
         </button>

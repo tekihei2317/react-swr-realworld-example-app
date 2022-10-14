@@ -17,7 +17,7 @@ type HttpErrorResponse = {
   error: any
 }
 
-type HttpResponse<T> = HttpSuccessResponse<T> | HttpErrorResponse
+export type HttpResponse<T> = HttpSuccessResponse<T> | HttpErrorResponse
 
 export async function runRequest<T>(runner: RequestRunner<T>): Promise<HttpResponse<T>> {
   try {

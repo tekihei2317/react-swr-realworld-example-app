@@ -19,6 +19,10 @@ export type Article = {
   }
 }
 
+type ArticleResponse = {
+  article: Article
+}
+
 export type ArticlesResponse = {
   articles: Article[]
   articlesCount: number
@@ -29,9 +33,9 @@ export async function getGlobalFeed() {
 }
 
 export async function favoriteArticle(slug: string) {
-  return runRequest(() => axios.post(`/articles/${slug}/favorite`))
+  return runRequest(() => axios.post<ArticleResponse>(`/articles/${slug}/favorite`))
 }
 
 export async function unfavoriteArticle(slug: string) {
-  return runRequest(() => axios.delete(`/articles/${slug}/unfavorite`))
+  return runRequest(() => axios.delete<ArticleResponse>(`/articles/${slug}/favorite`))
 }
