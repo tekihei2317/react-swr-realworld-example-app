@@ -28,6 +28,10 @@ export type ArticlesResponse = {
   articlesCount: number
 }
 
+export async function getArticle(slug: string) {
+  return runRequest(() => axios.get<ArticleResponse>(`/articles/${slug}`))
+}
+
 export async function getGlobalFeed() {
   return runRequest(() => axios.get<ArticlesResponse>('/articles'))
 }
